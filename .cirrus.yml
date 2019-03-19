@@ -11,6 +11,6 @@ env:
 
 task:
   install_script:
-    - pkg install -y bash git meson ninja
+    - pkg install -y bash git gmake meson ninja
   script:
     - bash ./travis-script
