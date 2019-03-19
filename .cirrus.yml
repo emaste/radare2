@@ -8,6 +8,6 @@ env:
 
 task:
   install_script:
-    - pkg install -y bash meson ninja
+    - pkg install -y bash git meson ninja
   script:
     - bash ./travis-script
