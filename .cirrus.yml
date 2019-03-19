@@ -1,0 +1,13 @@
+env:
+  CIRRUS_CLONE_DEPTH: 1
+
+freebsd_12_instance:
+  image: freebsd-12-0-release-amd64
+  cpu: 4
+  memory: 8G
+
+task:
+  install_script:
+    - pkg install -y bash meson ninja
+  script:
+    - bash ./travis-script
