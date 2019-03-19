@@ -5,6 +5,9 @@ freebsd_instance:
 
 env:
   CIRRUS_CLONE_DEPTH: 1
+  COMPILER_NAME: clang
+  CXX: clang++
+  CC: clang
 
 task:
   install_script:
