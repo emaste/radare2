@@ -1,6 +1,11 @@
 #!/bin/bash
 set -x
 
+case $(uname -s) in
+*BSD)       make=gmake;;
+*)          make=make;
+esac
+
 export PATH=${TRAVIS_BUILD_DIR}/install/bin:${PATH}
 export LD_LIBRARY_PATH=${TRAVIS_BUILD_DIR}/install/lib/$(uname -m)-linux-gnu:${TRAVIS_BUILD_DIR}/install/lib:${TRAVIS_BUILD_DIR}/install/lib64:${LD_LIBRARY_PATH}
 git clone -q --depth 1 --branch "${R2R_BRANCH}" "${R2R_REPO}" || true # If cloning fails that's not an error: we simply fallback to master.
@@ -52,8 +57,8 @@ else
         export LDFLAGS="${LDFLAGS} -O0 -ggdb -fsanitize=address -fno-omit-frame-pointer"
     fi
     ./configure --prefix=${TRAVIS_BUILD_DIR}/install > /dev/null || exit 1
-    make -s -j2 > /dev/null || exit 1
-    make install > /dev/null || exit 1
+    ${MAKE} -s -j2 > /dev/null || exit 1
+    ${MAKE} install > /dev/null || exit 1
     export PKG_CONFIG_PATH=${TRAVIS_BUILD_DIR}/pkgcfg:${PKG_CONFIG_PATH}
 fi
 
@@ -64,7 +69,7 @@ if [ "${R2_TESTS_DISABLE}" != "1" ] ; then
     git remote -v
     git branch
     git rev-parse HEAD
-    VERBOSE=1 make -k all || exit 1
+    VERBOSE=1 ${MAKE} -k all || exit 1
 
     if [ "${COVERAGE}" == "1" ] ; then
         cd ../build
